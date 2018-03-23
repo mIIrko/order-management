@@ -1,9 +1,13 @@
 package de.htwg.swqs.order.model;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class ShoppingCart {
 
     /**
@@ -11,7 +15,9 @@ public class ShoppingCart {
      */
     private static long idGenerator= 0L;
 
+    @Id
     private long id;
+    @ElementCollection
     private List<ShoppingCartItem> itemsInShoppingCart;
     private BigDecimal cartTotalSum;
 
@@ -20,6 +26,12 @@ public class ShoppingCart {
         this.cartTotalSum = new BigDecimal(0);
         // set a new id to the created shopping cart
         this.id = ++idGenerator;
+    }
+
+    public ShoppingCart(long id, List<ShoppingCartItem> itemsInShoppingCart, BigDecimal cartTotalSum) {
+        this.id = id;
+        this.itemsInShoppingCart = itemsInShoppingCart;
+        this.cartTotalSum = cartTotalSum;
     }
 
     public long getId() {

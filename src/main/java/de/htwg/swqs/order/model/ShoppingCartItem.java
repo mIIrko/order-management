@@ -1,5 +1,7 @@
 package de.htwg.swqs.order.model;
 
+import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -7,11 +9,12 @@ import javax.validation.constraints.Positive;
  * Class will be used to convert the payload of requests to add new products
  * to a java object (with Jackson Json-processor https://github.com/FasterXML/jackson)
  */
+@Embeddable
 public class ShoppingCartItem {
 
     @Positive
     private int quantity;
-    @NotNull
+    @ManyToOne
     private Product product;
 
     public ShoppingCartItem() {

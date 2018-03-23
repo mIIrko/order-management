@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 public interface OrderService {
 
-    public Order processOrder(CustomerInfo customerInfo, ShoppingCart shoppingCart);
+    Order createOrder(CustomerInfo customerInfo, ShoppingCart shoppingCart);
 
+    Order persistOrder(Order order);
 
-
-
+    Order getOrderById(long id);
 
 }

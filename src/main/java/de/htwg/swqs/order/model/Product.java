@@ -1,14 +1,20 @@
 package de.htwg.swqs.order.model;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-
+@Entity
 public class Product {
 
-
+    @Id
     private long id;
+    @Transient
     private String name;
+    @Transient
     private String description;
     private BigDecimal priceEuro;
 
