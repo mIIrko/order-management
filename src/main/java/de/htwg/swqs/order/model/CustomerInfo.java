@@ -2,15 +2,15 @@ package de.htwg.swqs.order.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import java.util.Locale;
 
 @Entity
 public class CustomerInfo implements Comparable<CustomerInfo> {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
     @NotBlank
     private String surname;
@@ -122,4 +122,16 @@ public class CustomerInfo implements Comparable<CustomerInfo> {
         return (compare);
     }
 
+    @Override
+    public String toString() {
+        return "CustomerInfo{" +
+                "id=" + id +
+                ", surname='" + surname + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", postcode='" + postcode + '\'' +
+                ", isoCountryCode='" + isoCountryCode + '\'' +
+                '}';
+    }
 }

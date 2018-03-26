@@ -1,6 +1,5 @@
 package de.htwg.swqs.order.model;
 
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;

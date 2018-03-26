@@ -27,19 +27,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * Creates a new order from the customer info and the corresponding shopping cart
+     * Creates a new order from the customer info and the corresponding shopping cart; the currency object is the
+     * one chosen from the customer
      *
      * @param customerInfo The info about customer name and address
      * @param shoppingCart The shopping cart with the ShoppingCartItems
      * @return The created order Object
      */
-    public Order createOrder(CustomerInfo customerInfo, ShoppingCart shoppingCart) {
+    public Order createOrder(CustomerInfo customerInfo, ShoppingCart shoppingCart, Currency currency) {
         Order newOrder = new Order();
         newOrder.setCustomerInfo(customerInfo);
         newOrder.setShoppingCart(shoppingCart);
         newOrder.setOrderDate(LocalDate.now());
         Cost shippingCosts = this.shippingCostService.calculateShippingCosts(customerInfo, shoppingCart);
         newOrder.setCostShipping(shippingCosts);
+        // todo: the different currencies get to be compared
         newOrder.setCostTotal(new Cost(shoppingCart.getCartTotalSum().add(shippingCosts.getAmount()), Currency.getInstance("EUR")));
         return newOrder;
     }
@@ -51,7 +53,8 @@ public class OrderServiceImpl implements OrderService {
      * @return The persisted order object
      */
     public Order persistOrder(Order order) {
-        return this.orderRepository.saveAndFlush(order);
+        // this.customerInfoRepository.save(order.getCustomerInfo());
+        return this.orderRepository.save(order);
     }
 
     public Order getOrderById(long id) {

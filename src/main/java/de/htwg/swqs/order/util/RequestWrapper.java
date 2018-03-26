@@ -7,10 +7,17 @@ import de.htwg.swqs.order.model.ShoppingCart;
  * Dummy wrapper class to hold two nested objects.
  * Is needed for automatically mapping the json requestbody to java objects
  */
-public class RequestObject {
+public class RequestWrapper {
 
     private CustomerInfo customerInfo;
     private ShoppingCart shoppingCart;
+
+    public RequestWrapper(){}
+
+    public RequestWrapper(CustomerInfo customerInfo, ShoppingCart shoppingCart) {
+        this.customerInfo = customerInfo;
+        this.shoppingCart = shoppingCart;
+    }
 
     public CustomerInfo getCustomerInfo() {
         return customerInfo;

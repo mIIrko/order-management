@@ -13,6 +13,7 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
         this.customerInfoRepository = customerInfoRepository;
     }
 
+    @Override
     public CustomerInfo persistCustomerInfo(CustomerInfo customerInfo) {
         return this.customerInfoRepository.saveAndFlush(customerInfo);
     }

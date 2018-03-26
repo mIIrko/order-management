@@ -21,6 +21,8 @@ public class Cost {
         this.currency = currency;
     }
 
+    public Cost(){}
+
     public BigDecimal getAmount() {
         return amount;
     }

@@ -1,5 +1,6 @@
 package de.htwg.swqs.order.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ public class ShoppingCartItem {
 
     @Positive
     private int quantity;
-    @ManyToOne
+    @ManyToOne(cascade= CascadeType.PERSIST)
     private Product product;
 
     public ShoppingCartItem() {

@@ -10,11 +10,11 @@ import java.time.LocalDate;
 public class Order {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.PERSIST)
     private CustomerInfo customerInfo;
-    @OneToOne
+    @OneToOne(cascade=CascadeType.PERSIST)
     private ShoppingCart shoppingCart;
     @Embedded
     @AttributeOverrides({
