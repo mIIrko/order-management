@@ -5,7 +5,6 @@ import de.htwg.swqs.order.payment.PaymentMethod;
 import de.htwg.swqs.order.repository.OrderRepository;
 import de.htwg.swqs.order.shippingcost.ShippingCostService;
 import de.htwg.swqs.order.util.OrderNotFoundException;
-import org.apache.tomcat.jni.Local;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -128,7 +127,7 @@ public class OrderServiceTest {
         long testId = 1L;
         Order testOrder = new Order(this.customerInfo, this.shoppingCart, new Cost("4.20", currency), new Cost("51.13", currency), LocalDate.now(), PaymentMethod.prePayment);
         testOrder.setId(testId);
-        when(orderRepositoryMock.saveAndFlush(testOrder)).thenReturn(testOrder);
+        when(orderRepositoryMock.save(testOrder)).thenReturn(testOrder);
         OrderService orderService = new OrderServiceImpl(shippingCostServiceMock, orderRepositoryMock);
 
         // execute

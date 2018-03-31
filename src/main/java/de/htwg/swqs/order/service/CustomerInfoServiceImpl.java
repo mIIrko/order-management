@@ -17,5 +17,4 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
     public CustomerInfo persistCustomerInfo(CustomerInfo customerInfo) {
         return this.customerInfoRepository.saveAndFlush(customerInfo);
     }
-
 }
