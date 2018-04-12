@@ -1,5 +1,6 @@
 package de.htwg.swqs.order;
 
+import de.htwg.swqs.order.payment.CurrencyConverterService;
 import de.htwg.swqs.order.repository.OrderRepository;
 import de.htwg.swqs.order.service.OrderService;
 import de.htwg.swqs.order.service.OrderServiceImpl;
@@ -17,8 +18,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class OrderConfiguration {
 
     @Bean
-    public OrderService catalogService(ShippingCostService shippingCostService, OrderRepository orderRepository) {
-        return new OrderServiceImpl(shippingCostService, orderRepository);
+    public OrderService catalogService(ShippingCostService shippingCostService, OrderRepository orderRepository, CurrencyConverterService currencyConverterService) {
+        return new OrderServiceImpl(shippingCostService, orderRepository, currencyConverterService);
     }
 
 }

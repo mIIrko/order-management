@@ -1,24 +1,22 @@
 package de.htwg.swqs.order.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.math.BigDecimal;
 import java.util.Currency;
 
 @Embeddable
 public class Cost {
+
+    @Column(precision = 19, scale = 4)
     private BigDecimal amount;
-    private Currency currency;
+    // the ISO 3166 string for the currency
+    private String currency;
 
     public Cost(BigDecimal amount, Currency currency) {
         super();
         this.amount = amount;
-        this.currency = currency;
-    }
-
-    public Cost(String amount, Currency currency) {
-        super();
-        this.amount = new BigDecimal(amount);
-        this.currency = currency;
+        this.currency = currency.getCurrencyCode();
     }
 
     public Cost(){}
@@ -28,7 +26,7 @@ public class Cost {
     }
 
     public Currency getCurrency() {
-        return currency;
+        return Currency.getInstance(this.currency);
     }
 
     @Override

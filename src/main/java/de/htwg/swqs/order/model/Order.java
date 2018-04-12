@@ -3,30 +3,24 @@ package de.htwg.swqs.order.model;
 import de.htwg.swqs.order.payment.PaymentMethod;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "order_data")
 public class Order {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @ManyToOne(cascade=CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private CustomerInfo customerInfo;
-    @OneToOne(cascade=CascadeType.PERSIST)
-    private ShoppingCart shoppingCart;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private List<OrderItem> orderItems;
+    @Column(precision = 19, scale = 4)
+    private BigDecimal costShipping;
     @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "amount", column = @Column(name = "amount_shipping")),
-            @AttributeOverride(name = "currency", column = @Column(name = "currency_shipping"))
-    })
-    private Cost costShipping;
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "amount", column = @Column(name = "amount_total")),
-            @AttributeOverride(name = "currency", column = @Column(name = "currency_total"))
-    })
     private Cost costTotal;
     private LocalDate orderDate;
     private PaymentMethod paymentMethod;
@@ -34,9 +28,9 @@ public class Order {
     public Order() {
     }
 
-    public Order(CustomerInfo customerInfo, ShoppingCart shoppingCart, Cost costShipping, Cost costTotal, LocalDate orderDate, PaymentMethod paymentMethod) {
+    public Order(CustomerInfo customerInfo, List<OrderItem> orderItems, BigDecimal costShipping, Cost costTotal, LocalDate orderDate, PaymentMethod paymentMethod) {
         this.customerInfo = customerInfo;
-        this.shoppingCart = shoppingCart;
+        this.orderItems = orderItems;
         this.costShipping = costShipping;
         this.costTotal = costTotal;
         this.orderDate = orderDate;
@@ -59,19 +53,19 @@ public class Order {
         this.customerInfo = customerInfo;
     }
 
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
+    public List<OrderItem> getShoppingCart() {
+        return orderItems;
     }
 
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
+    public void setShoppingCart(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
-    public Cost getCostShipping() {
+    public BigDecimal getCostShipping() {
         return costShipping;
     }
 
-    public void setCostShipping(Cost costShipping) {
+    public void setCostShipping(BigDecimal costShipping) {
         this.costShipping = costShipping;
     }
 
@@ -98,4 +92,18 @@ public class Order {
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", customerInfo=" + customerInfo +
+                ", orderItems=" + orderItems +
+                ", costShipping=" + costShipping +
+                ", costTotal=" + costTotal +
+                ", orderDate=" + orderDate +
+                ", paymentMethod=" + paymentMethod +
+                '}';
+    }
 }
+

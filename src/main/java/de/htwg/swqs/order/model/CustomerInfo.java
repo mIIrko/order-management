@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 public class CustomerInfo implements Comparable<CustomerInfo> {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @NotBlank
     private String surname;
@@ -119,7 +119,7 @@ public class CustomerInfo implements Comparable<CustomerInfo> {
         if (compare == 0) {
             compare = this.firstname.compareToIgnoreCase(customerInfo.firstname);
         }
-        return (compare);
+        return compare;
     }
 
     @Override
