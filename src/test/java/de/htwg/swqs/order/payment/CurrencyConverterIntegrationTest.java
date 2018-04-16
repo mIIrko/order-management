@@ -3,13 +3,17 @@ package de.htwg.swqs.order.payment;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Currency;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class CurrencyConverterServiceTest {
+/**
+ * Test the external api of the CurrencyConverterServiceImpl
+ */
+public class CurrencyConverterIntegrationTest {
 
     private CurrencyConverterService currencyConverterService;
 
@@ -19,7 +23,7 @@ public class CurrencyConverterServiceTest {
     }
 
     @Test
-    public void testConvertToWithTwoDifferentCurrencies() {
+    public void testConvertToWithTwoDifferentCurrencies() throws IOException{
         // setup
         Currency currencyFrom = Currency.getInstance("EUR");
         Currency currencyTo = Currency.getInstance("USD");
@@ -33,7 +37,7 @@ public class CurrencyConverterServiceTest {
     }
 
     @Test
-    public void testConvertToWithTwoSameCurrencies() {
+    public void testConvertToWithTwoSameCurrencies() throws IOException{
         // setup
         String currencyCode = "EUR";
         Currency currencyFrom = Currency.getInstance(currencyCode);
@@ -48,7 +52,7 @@ public class CurrencyConverterServiceTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testConvertToWithNegativeAmount() {
+    public void testConvertToWithNegativeAmount() throws IOException{
         // setup
         Currency currencyFrom = Currency.getInstance("EUR");
         Currency currencyTo = Currency.getInstance("USD");
@@ -58,7 +62,7 @@ public class CurrencyConverterServiceTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testConvertToWithZeroAmount() {
+    public void testConvertToWithZeroAmount() throws IOException{
         // setup
         Currency currencyFrom = Currency.getInstance("EUR");
         Currency currencyTo = Currency.getInstance("USD");

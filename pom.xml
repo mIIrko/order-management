@@ -6,7 +6,7 @@
 
     <groupId>de.htwg.swqs</groupId>
     <artifactId>order</artifactId>
-    <version>0.0.2.SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>order</name>
@@ -54,6 +54,32 @@
         </dependency>
 
         <dependency>
+            <groupId>com.icegreen</groupId>
+            <artifactId>greenmail</artifactId>
+            <version>1.5.5</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- simple abstraction of java mail api-->
+        <dependency>
+            <groupId>org.simplejavamail</groupId>
+            <artifactId>simple-java-mail</artifactId>
+            <version>5.0.2</version>
+        </dependency>
+        <!-- for processing json
+        <dependency>
+            <groupId>com.fasterxml.jackson</groupId>
+            <artifactId>jackson-base</artifactId>
+            <version>2.9.5</version>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.5</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
@@ -66,11 +92,7 @@
             <version>6.0.9.Final</version>
         </dependency>
 
-        <dependency>
-            <groupId>de.htwg.swqs</groupId>
-            <artifactId>catalog</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+
     </dependencies>
 
     <build>

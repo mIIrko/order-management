@@ -9,10 +9,11 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootConfiguration
-@ComponentScan(basePackages = "de.htwg.swqs.order")
+@ComponentScan({"de.htwg.swqs.order.*"})
 @EnableJpaRepositories("de.htwg.swqs.order.repository")
 @EntityScan("de.htwg.swqs.order.model")
 public class OrderConfiguration {

@@ -4,14 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Entity
 public class CustomerInfo implements Comparable<CustomerInfo> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @Email
+    private String email;
     @NotBlank
     private String surname;
     @NotBlank
@@ -33,16 +34,16 @@ public class CustomerInfo implements Comparable<CustomerInfo> {
     /**
      * Creates a new customer info.
      *
-     * @param id        id of the address
+     * @param email     email of the address
      * @param surname   the surname
      * @param firstname the firstname
      * @param street    the street
      * @param city      the city
      * @param postcode  the postcode
      */
-    public CustomerInfo(long id, String surname, String firstname, String street, String city,
+    public CustomerInfo(String email, String surname, String firstname, String street, String city,
                         String postcode, String isoCountryCode) {
-        this.id = id;
+        this.email = email;
         this.surname = surname;
         this.firstname = firstname;
         this.street = street;
@@ -51,8 +52,8 @@ public class CustomerInfo implements Comparable<CustomerInfo> {
         this.isoCountryCode = isoCountryCode;
     }
 
-    public long getId() {
-        return this.id;
+    public String getEmail() {
+        return this.email;
     }
 
     public String getSurname() {
@@ -125,7 +126,7 @@ public class CustomerInfo implements Comparable<CustomerInfo> {
     @Override
     public String toString() {
         return "CustomerInfo{" +
-                "id=" + id +
+                "email=" + email +
                 ", surname='" + surname + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", street='" + street + '\'' +

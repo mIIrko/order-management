@@ -1,6 +1,5 @@
 package de.htwg.swqs.order.service;
 
-import de.htwg.swqs.catalog.model.Product;
 import de.htwg.swqs.order.model.*;
 import de.htwg.swqs.order.payment.CurrencyConverterService;
 import de.htwg.swqs.order.payment.PaymentMethod;
