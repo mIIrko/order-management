@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
  * the verification is done by calling the rest api from the
  * smtp fake server, the responded json is parsed with jackson
  */
-public class EmailServiceIntegrationTest {
+public class EmailServiceIT {
 
     @Test
     public void sendEmailSuccessful() {

@@ -1,5 +1,6 @@
 package de.htwg.swqs.order.service;
 
+import de.htwg.swqs.order.mail.EmailService;
 import de.htwg.swqs.order.model.*;
 import de.htwg.swqs.order.payment.CurrencyConverterService;
 import de.htwg.swqs.order.payment.PaymentMethod;
@@ -17,8 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
@@ -34,17 +33,20 @@ public class OrderServiceHybridFixtureTest {
     private ShippingCostService shippingCostService;
     private OrderRepository orderRepository;
     private CurrencyConverterService currencyConverterService;
+    private EmailService emailService;
 
     @Before
     public void init() {
         this.shippingCostService = mock(ShippingCostService.class);
         this.orderRepository = mock(OrderRepository.class);
         this.currencyConverterService = mock(CurrencyConverterService.class);
-                this.orderService = new OrderServiceImpl(this.shippingCostService, this.orderRepository, this.currencyConverterService);
+        this.emailService = mock(EmailService.class);
+        this.orderService = new OrderServiceImpl(this.shippingCostService, this.orderRepository, this.currencyConverterService, this.emailService);
     }
 
     private CustomerInfo createDummyCustomerInfo() {
         CustomerInfo customerInfo = new CustomerInfo();
+        customerInfo.setEmail("max@muster.de");
         customerInfo.setCity("Konstanz");
         customerInfo.setPostcode("78467");
         customerInfo.setStreet("Hauptstraße 3");
@@ -76,6 +78,10 @@ public class OrderServiceHybridFixtureTest {
         when(shippingCostService.calculateShippingCosts(customerInfo, itemList)).thenReturn(
                 new BigDecimal("4.20")
         );
+
+        Order dummyOrder = mock(Order.class);
+        when(dummyOrder.getId()).thenReturn(1L);
+        when(this.orderRepository.saveAndFlush(any(Order.class))).thenReturn(dummyOrder);
         // execute
         Order createdOrder = this.orderService.createOrder(customerInfo, itemList, currency);
 
@@ -85,7 +91,7 @@ public class OrderServiceHybridFixtureTest {
     }
 
     @Test
-    public void getOrderByIdSuccessful() throws OrderNotFoundException{
+    public void getOrderByIdSuccessful() throws OrderNotFoundException {
         // setup
         CustomerInfo customerInfo = createDummyCustomerInfo();
         List<OrderItem> itemList = createDummyOrderItemList();
@@ -103,7 +109,7 @@ public class OrderServiceHybridFixtureTest {
     }
 
     @Test(expected = OrderNotFoundException.class)
-    public void getOrderByIdWhoDoesNotExistThrowException() throws OrderNotFoundException{
+    public void getOrderByIdWhoDoesNotExistThrowException() throws OrderNotFoundException {
         // setup
         CustomerInfo customerInfo = createDummyCustomerInfo();
         List<OrderItem> itemList = createDummyOrderItemList();

@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNotEquals;
 /**
  * Test the external api of the CurrencyConverterServiceImpl
  */
-public class CurrencyConverterIntegrationTest {
+public class CurrencyConverterIT {
 
     private CurrencyConverterService currencyConverterService;
 

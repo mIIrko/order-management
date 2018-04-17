@@ -1,5 +1,7 @@
 package de.htwg.swqs.order.service;
 
+import de.htwg.swqs.order.mail.EmailService;
+import de.htwg.swqs.order.mail.EmailServiceImpl;
 import de.htwg.swqs.order.model.*;
 import de.htwg.swqs.order.payment.CurrencyConverterService;
 import de.htwg.swqs.order.payment.PaymentMethod;
@@ -16,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 /**
@@ -29,6 +30,7 @@ public class OrderServiceDelegateFixtureTest {
 
     private CustomerInfo createDummyCustomerInfo() {
         CustomerInfo customerInfo = new CustomerInfo();
+        customerInfo.setEmail("max@muster.de");
         customerInfo.setCity("Konstanz");
         customerInfo.setPostcode("78467");
         customerInfo.setStreet("Hauptstraße 3");
@@ -61,12 +63,15 @@ public class OrderServiceDelegateFixtureTest {
                 new BigDecimal("4.20")
         );
         OrderRepository orderRepositoryMock = mock(OrderRepository.class);
-        CurrencyConverterService currencyConverterServiceMock = mock(CurrencyConverterService.class);
-        OrderService orderService = new OrderServiceImpl(shippingCostServiceMock, orderRepositoryMock, currencyConverterServiceMock);
+        Order dummyOrder = mock(Order.class);
+        when(dummyOrder.getId()).thenReturn(1L);
+        when(orderRepositoryMock.saveAndFlush(any(Order.class))).thenReturn(dummyOrder);
 
+        CurrencyConverterService currencyConverterServiceMock = mock(CurrencyConverterService.class);
+        // EmailService emailServiceMock = mock(EmailService.class);
+        OrderService orderService = new OrderServiceImpl(shippingCostServiceMock, orderRepositoryMock, currencyConverterServiceMock, new EmailServiceImpl());
         // execute
         Order createdOrder = orderService.createOrder(customerInfo, itemList, currency);
-
         // verify
        verify(orderRepositoryMock, times(1)).saveAndFlush(any(Order.class));
        verifyNoMoreInteractions(orderRepositoryMock);
@@ -85,8 +90,8 @@ public class OrderServiceDelegateFixtureTest {
         testOrder.setId(testId);
         when(orderRepositoryMock.findById(testId)).thenReturn(Optional.of(testOrder));
         CurrencyConverterService currencyConverterServiceMock = mock(CurrencyConverterService.class);
-        OrderService orderService = new OrderServiceImpl(shippingCostServiceMock, orderRepositoryMock, currencyConverterServiceMock);
-        // execute
+        EmailService emailServiceMock = mock(EmailService.class);
+        OrderService orderService = new OrderServiceImpl(shippingCostServiceMock, orderRepositoryMock, currencyConverterServiceMock, emailServiceMock);        // execute
         Order returnedOrder = orderService.getOrderById(testId);
 
         // verify
@@ -106,8 +111,8 @@ public class OrderServiceDelegateFixtureTest {
         testOrder.setId(testId);
         when(orderRepositoryMock.findById(testId)).thenReturn(Optional.empty());
         CurrencyConverterService currencyConverterServiceMock = mock(CurrencyConverterService.class);
-        OrderService orderService = new OrderServiceImpl(shippingCostServiceMock, orderRepositoryMock, currencyConverterServiceMock);
-        // execute
+        EmailService emailServiceMock = mock(EmailService.class);
+        OrderService orderService = new OrderServiceImpl(shippingCostServiceMock, orderRepositoryMock, currencyConverterServiceMock, emailServiceMock);        // execute
         Order returnedOrder = orderService.getOrderById(testId);
 
         // verify

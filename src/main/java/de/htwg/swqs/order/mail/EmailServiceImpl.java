@@ -12,13 +12,12 @@ import java.util.Optional;
 /**
  * For faking our real mail smtp server
  * we use the free service from https://www.smtpbucket.com/
- *
+ * <p>
  * We can send emails to this service and verify that they have reached the outgoing mail server.
  * The service works without any registration (andy warranty) and is fully free of costs.
- *
+ * <p>
  * On the following page you can search for mails which was sent: https://www.smtpbucket.com/emails
  * The verification can also be done through a rest api (used in the test cases for this service)
- *
  */
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -39,6 +38,7 @@ public class EmailServiceImpl implements EmailService {
     public EmailServiceImpl(Session session) {
         this.sessionOptional = Optional.of(session);
     }
+
 
     @Override
     public void sendMail(String to, String subject, String text) {

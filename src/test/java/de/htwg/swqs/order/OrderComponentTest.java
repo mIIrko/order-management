@@ -1,5 +1,6 @@
 package de.htwg.swqs.order;
 
+import de.htwg.swqs.order.mail.EmailService;
 import de.htwg.swqs.order.model.CustomerInfo;
 import de.htwg.swqs.order.model.Order;
 import de.htwg.swqs.order.model.OrderItem;
@@ -38,6 +39,8 @@ public class OrderComponentTest {
     private OrderRepository orderRepository;
     @Autowired
     private CurrencyConverterService currencyConverterService;
+    @Autowired
+    private EmailService emailService;
 
     private OrderService orderService;
 
@@ -47,7 +50,8 @@ public class OrderComponentTest {
         this.orderService = new OrderServiceImpl(
                 this.shippingCostService,
                 this.orderRepository,
-                this.currencyConverterService
+                this.currencyConverterService,
+                this.emailService
         );
     }
 
@@ -143,6 +147,7 @@ public class OrderComponentTest {
 
     private CustomerInfo createDummyCustomerInfo(String isoCountryCode) {
         CustomerInfo c = new CustomerInfo();
+        c.setEmail("max@muster.de");
         c.setSurname("Mustermann");
         c.setFirstname("Max");
         c.setStreet("Hauptstraße 3");

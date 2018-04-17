@@ -1,5 +1,6 @@
 package de.htwg.swqs.order.service;
 
+import de.htwg.swqs.order.mail.EmailService;
 import de.htwg.swqs.order.model.*;
 import de.htwg.swqs.order.payment.CurrencyConverterService;
 import de.htwg.swqs.order.payment.PaymentMethod;
@@ -17,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -31,10 +31,12 @@ public class OrderServiceImplicitFixtureTest {
     private OrderService orderService;
     private ShippingCostService shippingCostService;
     private OrderRepository orderRepository;
+    private EmailService emailService;
+    private CurrencyConverterService currencyConverterService;
+
 
     private CustomerInfo customerInfo;
     private Currency currency;
-    private CurrencyConverterService currencyConverterServie;
 
     private List<OrderItem> itemList;
 
@@ -42,6 +44,7 @@ public class OrderServiceImplicitFixtureTest {
     public void init() {
         // create new example customer info
         this.customerInfo = new CustomerInfo();
+        this.customerInfo.setEmail("max@muster.de");
         this.customerInfo.setCity("Konstanz");
         this.customerInfo.setPostcode("78467");
         this.customerInfo.setStreet("Hauptstraße 3");
@@ -65,8 +68,9 @@ public class OrderServiceImplicitFixtureTest {
 
         this.shippingCostService = mock(ShippingCostService.class);
         this.orderRepository = mock(OrderRepository.class);
-        this.currencyConverterServie = mock(CurrencyConverterService.class);
-        this.orderService = new OrderServiceImpl(this.shippingCostService, this.orderRepository, this.currencyConverterServie);
+        this.currencyConverterService = mock(CurrencyConverterService.class);
+        this.emailService = mock(EmailService.class);
+        this.orderService = new OrderServiceImpl(this.shippingCostService, this.orderRepository, this.currencyConverterService, this.emailService);
     }
 
     @Test
@@ -76,6 +80,9 @@ public class OrderServiceImplicitFixtureTest {
         when(this.shippingCostService.calculateShippingCosts(this.customerInfo, this.itemList)).thenReturn(
                 new BigDecimal("4.20")
         );
+        Order dummyOrder = mock(Order.class);
+        when(dummyOrder.getId()).thenReturn(1L);
+        when(this.orderRepository.saveAndFlush(any(Order.class))).thenReturn(dummyOrder);
 
         // execute
         Order createdOrder = orderService.createOrder(this.customerInfo, this.itemList, this.currency);

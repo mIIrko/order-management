@@ -1,9 +1,6 @@
 package de.htwg.swqs.order.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -11,7 +8,10 @@ import javax.validation.constraints.NotBlank;
 public class CustomerInfo implements Comparable<CustomerInfo> {
 
     @Id
+    @GeneratedValue
+    private long id;
     @Email
+    @Column(unique=true)
     private String email;
     @NotBlank
     private String surname;
@@ -34,6 +34,7 @@ public class CustomerInfo implements Comparable<CustomerInfo> {
     /**
      * Creates a new customer info.
      *
+     * @param id        id of the new customer info
      * @param email     email of the address
      * @param surname   the surname
      * @param firstname the firstname
@@ -41,8 +42,9 @@ public class CustomerInfo implements Comparable<CustomerInfo> {
      * @param city      the city
      * @param postcode  the postcode
      */
-    public CustomerInfo(String email, String surname, String firstname, String street, String city,
+    public CustomerInfo(long id, String email, String surname, String firstname, String street, String city,
                         String postcode, String isoCountryCode) {
+        this.id = id;
         this.email = email;
         this.surname = surname;
         this.firstname = firstname;
@@ -54,6 +56,10 @@ public class CustomerInfo implements Comparable<CustomerInfo> {
 
     public String getEmail() {
         return this.email;
+    }
+
+    public long getId() {
+        return this.id;
     }
 
     public String getSurname() {
@@ -78,6 +84,10 @@ public class CustomerInfo implements Comparable<CustomerInfo> {
 
     public String getIsoCountryCode() {
         return isoCountryCode;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setSurname(String surname) {
