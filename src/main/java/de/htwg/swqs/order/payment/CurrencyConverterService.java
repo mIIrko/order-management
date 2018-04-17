@@ -6,6 +6,7 @@ import java.util.Currency;
 
 public interface CurrencyConverterService {
 
-    BigDecimal convertTo(Currency currencyFrom, Currency currencyTo, BigDecimal amount) throws IOException;
+  BigDecimal convertTo(Currency currencyFrom, Currency currencyTo, BigDecimal amount)
+      throws IOException;
 
 }

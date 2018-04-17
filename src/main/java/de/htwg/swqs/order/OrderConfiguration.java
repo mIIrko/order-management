@@ -18,9 +18,14 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan("de.htwg.swqs.order.model")
 public class OrderConfiguration {
 
-    @Bean
-    public OrderService catalogService(ShippingCostService shippingCostService, OrderRepository orderRepository, CurrencyConverterService currencyConverterService, EmailService emailService) {
-        return new OrderServiceImpl(shippingCostService, orderRepository, currencyConverterService, emailService);
-    }
+  @Bean
+  public OrderService catalogService(
+      ShippingCostService shippingCostService,
+      OrderRepository orderRepository,
+      CurrencyConverterService currencyConverterService,
+      EmailService emailService) {
+    return new OrderServiceImpl(shippingCostService, orderRepository, currencyConverterService,
+        emailService);
+  }
 
 }
