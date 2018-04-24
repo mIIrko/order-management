@@ -11,6 +11,8 @@ public interface OrderService {
 
   Order createOrder(CustomerInfo customerInfo, List<OrderItem> orderItems, Currency currency);
 
+  Order persistOrder(Order order);
+
   Order getOrderById(long id) throws OrderNotFoundException;
 
 }

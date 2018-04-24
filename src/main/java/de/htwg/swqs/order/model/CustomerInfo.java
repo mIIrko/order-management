@@ -14,7 +14,6 @@ public class CustomerInfo implements Comparable<CustomerInfo> {
   @GeneratedValue
   private long id;
   @Email
-  @Column(unique = true)
   private String email;
   @NotBlank
   private String surname;

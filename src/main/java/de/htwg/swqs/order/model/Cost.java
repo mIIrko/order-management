@@ -10,15 +10,15 @@ public class Cost {
 
   @Column(precision = 19, scale = 4)
   private BigDecimal amount;
+
   // the ISO 3166 string for the currency
   private String currency;
 
   /**
-   * Constructor with parameters to create
-   * a completed cost object.
+   * Constructor with parameters to create a completed cost object.
    *
-   * @param amount    The amount of the costs
-   * @param currency  The currency in which the costs are represented
+   * @param amount The amount of the costs
+   * @param currency The currency in which the costs are represented
    */
   public Cost(BigDecimal amount, Currency currency) {
     super();
@@ -33,8 +33,16 @@ public class Cost {
     return amount;
   }
 
-  public Currency getCurrency() {
-    return Currency.getInstance(this.currency);
+  public String getCurrency() {
+    return this.currency;
+  }
+
+  public void setAmount(BigDecimal amount) {
+    this.amount = amount;
+  }
+
+  public void setCurrency(String currency) {
+    this.currency = currency;
   }
 
   @Override

@@ -19,15 +19,17 @@ public class OrderItem {
   private int quantity;
 
   private long productId;
+
   @Column(precision = 19, scale = 4)
   private BigDecimal priceEuro;
 
   public OrderItem() {
   }
 
-  public OrderItem(@Positive int quantity, @NotNull long productId) {
+  public OrderItem(@Positive int quantity, @NotNull long productId, BigDecimal priceEuro) {
     this.quantity = quantity;
     this.productId = productId;
+    this.priceEuro = priceEuro;
   }
 
   public int getQuantity() {

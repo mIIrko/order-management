@@ -56,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
       Currency currency) {
     Order newOrder = new Order();
     newOrder.setCustomerInfo(customerInfo);
-    newOrder.setShoppingCart(orderItems);
+    newOrder.setOrderItems(orderItems);
     newOrder.setOrderDate(LocalDate.now());
 
     // calculate total cost of items
@@ -94,14 +94,22 @@ public class OrderServiceImpl implements OrderService {
       newOrder.setCostTotal(new Cost(totalCosts, currency));
     }
 
-    // create and save the order
-    Order createdOrder = this.orderRepository.saveAndFlush(newOrder);
+    return newOrder;
+  }
+
+  /**
+   * Persists the order and send a mail to the customer.
+   *
+   * @param order The previously created order
+   * @return The persisted order returned from the database
+   */
+  public Order persistOrder(Order order) {
+    Order persistedOrder = this.orderRepository.saveAndFlush(order);
 
     // send email to the customer
-    this.emailService.sendMail(customerInfo.getEmail(), "Your order " + createdOrder.getId(),
+    this.emailService.sendMail(order.getCustomerInfo().getEmail(), "Your order " + order.getId(),
         "Thank you for your order!");
-
-    return createdOrder;
+    return persistedOrder;
   }
 
   /**

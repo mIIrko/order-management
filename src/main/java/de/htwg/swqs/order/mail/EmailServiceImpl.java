@@ -8,7 +8,6 @@ import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.MailerBuilder;
 import org.springframework.stereotype.Service;
 
-
 /**
  * <p> For faking our real mail smtp server we use the free service from
  * https://www.smtpbucket.com/

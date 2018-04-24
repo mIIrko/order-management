@@ -1,5 +1,7 @@
 package de.htwg.swqs.order;
 
+import static org.junit.Assert.assertEquals;
+
 import de.htwg.swqs.order.mail.EmailService;
 import de.htwg.swqs.order.model.CustomerInfo;
 import de.htwg.swqs.order.model.Order;
@@ -10,6 +12,10 @@ import de.htwg.swqs.order.service.OrderService;
 import de.htwg.swqs.order.service.OrderServiceImpl;
 import de.htwg.swqs.order.shippingcost.ShippingCostService;
 import de.htwg.swqs.order.util.OrderNotFoundException;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Currency;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,149 +25,155 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Currency;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = OrderConfiguration.class)
 @DataJpaTest
 public class OrderComponentTest {
 
-    @Autowired
-    private TestEntityManager entityManager;
-    @Autowired
-    private ShippingCostService shippingCostService;
-    @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private CurrencyConverterService currencyConverterService;
-    @Autowired
-    private EmailService emailService;
+  @Autowired
+  private TestEntityManager entityManager;
+  @Autowired
+  private ShippingCostService shippingCostService;
+  @Autowired
+  private OrderRepository orderRepository;
+  @Autowired
+  private CurrencyConverterService currencyConverterService;
+  @Autowired
+  private EmailService emailService;
 
-    private OrderService orderService;
+  private OrderService orderService;
 
-    @Before
-    public void setUp() {
-        // setup
-        this.orderService = new OrderServiceImpl(
-                this.shippingCostService,
-                this.orderRepository,
-                this.currencyConverterService,
-                this.emailService
-        );
-    }
+  @Before
+  public void setUp() {
+    // setup
+    this.orderService = new OrderServiceImpl(
+        this.shippingCostService,
+        this.orderRepository,
+        this.currencyConverterService,
+        this.emailService
+    );
+  }
 
-    @Test
-    public void createNewNationalOrderAndCheckIfPersisted() throws OrderNotFoundException {
-        // setup
-        List<OrderItem> list = Arrays.asList(
-                createDummyOrderItem(1L, 2, new BigDecimal("5.00")),
-                createDummyOrderItem(2L, 3, new BigDecimal("2.99"))
-        );
+  @Test
+  public void createNewNationalOrderAndCheckIfPersisted() throws OrderNotFoundException {
+    // setup
+    List<OrderItem> list = Arrays.asList(
+        createDummyOrderItem(1L, 2, new BigDecimal("5.00")),
+        createDummyOrderItem(2L, 3, new BigDecimal("2.99"))
+    );
 
-        list.forEach(item -> System.out.println(item.getProductId()));
+    list.forEach(item -> System.out.println(item.getProductId()));
 
-        // execute
-        Order createdOrder = this.orderService.createOrder(createDummyCustomerInfo("DE"), list, Currency.getInstance("EUR"));
-        Order retrievedOrder = this.orderService.getOrderById(createdOrder.getId());
+    // execute
+    Order createdOrder = this.orderService
+        .createOrder(createDummyCustomerInfo("DE"), list, Currency.getInstance("EUR"));
+    Order persistedOrder = this.orderService.persistOrder(createdOrder);
 
-        System.out.println(retrievedOrder.toString());
+    Order retrievedOrder = this.orderService.getOrderById(persistedOrder.getId());
 
-        // verify
-        assertEquals(createdOrder, retrievedOrder);
-    }
+    System.out.println(retrievedOrder.toString());
 
-    @Test
-    public void createNewNationalOrderWithFreeShippingAndCheckIfPersisted() throws OrderNotFoundException {
-        // setup
-        List<OrderItem> list = Arrays.asList(
-                createDummyOrderItem(1L, 12, new BigDecimal("50.00")),
-                createDummyOrderItem(2L, 3, new BigDecimal("2.99"))
-        );
+    // verify
+    assertEquals(persistedOrder, retrievedOrder);
+  }
 
-        list.forEach(item -> System.out.println(item.getProductId()));
+  @Test
+  public void createNewNationalOrderWithFreeShippingAndCheckIfPersisted()
+      throws OrderNotFoundException {
+    // setup
+    List<OrderItem> list = Arrays.asList(
+        createDummyOrderItem(1L, 12, new BigDecimal("50.00")),
+        createDummyOrderItem(2L, 3, new BigDecimal("2.99"))
+    );
 
-        // execute
-        Order createdOrder = this.orderService.createOrder(createDummyCustomerInfo("DE"), list, Currency.getInstance("EUR"));
-        Order retrievedOrder = this.orderService.getOrderById(createdOrder.getId());
+    list.forEach(item -> System.out.println(item.getProductId()));
 
-        System.out.println(retrievedOrder.toString());
+    // execute
+    Order createdOrder = this.orderService
+        .createOrder(createDummyCustomerInfo("DE"), list, Currency.getInstance("EUR"));
+    Order persistedOrder = this.orderService.persistOrder(createdOrder);
 
-        // verify
-        assertEquals(createdOrder, retrievedOrder);
-    }
+    Order retrievedOrder = this.orderService.getOrderById(persistedOrder.getId());
 
-    @Test
-    public void createNewInternationalOrderAndCheckIfPersisted() throws OrderNotFoundException {
-        // setup
-        List<OrderItem> list = Arrays.asList(
-                createDummyOrderItem(1L, 2, new BigDecimal("5.00")),
-                createDummyOrderItem(2L, 3, new BigDecimal("2.99"))
-        );
+    System.out.println(retrievedOrder.toString());
 
-        list.forEach(item -> System.out.println(item.getProductId()));
+    // verify
+    assertEquals(persistedOrder, retrievedOrder);
+  }
 
-        // execute
-        Order createdOrder = this.orderService.createOrder(createDummyCustomerInfo("US"), list, Currency.getInstance("USD"));
-        Order retrievedOrder = this.orderService.getOrderById(createdOrder.getId());
+  @Test
+  public void createNewInternationalOrderAndCheckIfPersisted() throws OrderNotFoundException {
+    // setup
+    List<OrderItem> list = Arrays.asList(
+        createDummyOrderItem(1L, 2, new BigDecimal("5.00")),
+        createDummyOrderItem(2L, 3, new BigDecimal("2.99"))
+    );
 
-        System.out.println(retrievedOrder.toString());
+    list.forEach(item -> System.out.println(item.getProductId()));
 
-        // verify
-        assertEquals(createdOrder, retrievedOrder);
-    }
+    // execute
+    Order createdOrder = this.orderService
+        .createOrder(createDummyCustomerInfo("US"), list, Currency.getInstance("USD"));
+    Order persistedOrder = this.orderService.persistOrder(createdOrder);
 
-    @Test
-    public void createNewInternationalOrderWithFreeShippingAndCheckIfPersisted() throws OrderNotFoundException {
-        // setup
-        List<OrderItem> list = Arrays.asList(
-                createDummyOrderItem(1L, 12, new BigDecimal("50.00")),
-                createDummyOrderItem(2L, 3, new BigDecimal("2.99"))
-        );
+    Order retrievedOrder = this.orderService.getOrderById(persistedOrder.getId());
 
-        list.forEach(item -> System.out.println(item.getProductId()));
+    System.out.println(retrievedOrder.toString());
 
-        // execute
-        Order createdOrder = this.orderService.createOrder(createDummyCustomerInfo("US"), list, Currency.getInstance("USD"));
-        Order retrievedOrder = this.orderService.getOrderById(createdOrder.getId());
+    // verify
+    assertEquals(persistedOrder, retrievedOrder);
+  }
 
-        System.out.println(retrievedOrder.toString());
+  @Test
+  public void createNewInternationalOrderWithFreeShippingAndCheckIfPersisted()
+      throws OrderNotFoundException {
+    // setup
+    List<OrderItem> list = Arrays.asList(
+        createDummyOrderItem(1L, 12, new BigDecimal("50.00")),
+        createDummyOrderItem(2L, 3, new BigDecimal("2.99"))
+    );
 
-        // verify
-        assertEquals(createdOrder, retrievedOrder);
-    }
+    list.forEach(item -> System.out.println(item.getProductId()));
 
-    @Test(expected = OrderNotFoundException.class)
-    public void tryToGetNotExistingOrder() throws OrderNotFoundException {
-        // no setup, we need no entries in the db
+    // execute
+    Order createdOrder = this.orderService
+        .createOrder(createDummyCustomerInfo("US"), list, Currency.getInstance("USD"));
+    Order persistedOrder = orderService.persistOrder(createdOrder);
 
-        // execute
-        Order retrievedOrder = this.orderService.getOrderById(1L);
-    }
+    Order retrievedOrder = this.orderService.getOrderById(persistedOrder.getId());
+
+    System.out.println(retrievedOrder.toString());
+
+    // verify
+    assertEquals(persistedOrder, retrievedOrder);
+  }
+
+  @Test(expected = OrderNotFoundException.class)
+  public void tryToGetNotExistingOrder() throws OrderNotFoundException {
+    // no setup, we need no entries in the db
+
+    // execute
+    Order retrievedOrder = this.orderService.getOrderById(1L);
+  }
 
 
+  private CustomerInfo createDummyCustomerInfo(String isoCountryCode) {
+    CustomerInfo c = new CustomerInfo();
+    c.setEmail("max@muster.de");
+    c.setSurname("Mustermann");
+    c.setFirstname("Max");
+    c.setStreet("Hauptstraße 3");
+    c.setCity("Konstanz");
+    c.setPostcode("78467");
+    c.setIsoCountryCode(isoCountryCode);
+    return c;
+  }
 
-    private CustomerInfo createDummyCustomerInfo(String isoCountryCode) {
-        CustomerInfo c = new CustomerInfo();
-        c.setEmail("max@muster.de");
-        c.setSurname("Mustermann");
-        c.setFirstname("Max");
-        c.setStreet("Hauptstraße 3");
-        c.setCity("Konstanz");
-        c.setPostcode("78467");
-        c.setIsoCountryCode(isoCountryCode);
-        return c;
-    }
-
-    private OrderItem createDummyOrderItem(long productId, int productAmount, BigDecimal price) {
-        OrderItem s = new OrderItem();
-        s.setQuantity(productAmount);
-        s.setProductId(productId);
-        s.setPriceEuro(price);
-        return s;
-    }
+  private OrderItem createDummyOrderItem(long productId, int productAmount, BigDecimal price) {
+    OrderItem s = new OrderItem();
+    s.setQuantity(productAmount);
+    s.setProductId(productId);
+    s.setPriceEuro(price);
+    return s;
+  }
 }

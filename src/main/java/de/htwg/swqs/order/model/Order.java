@@ -3,11 +3,13 @@ package de.htwg.swqs.order.model;
 import de.htwg.swqs.order.payment.PaymentMethod;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,10 +24,10 @@ public class Order {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
-  @ManyToOne(cascade = CascadeType.PERSIST)
+  @ManyToOne(fetch= FetchType.EAGER, cascade = CascadeType.PERSIST)
   private CustomerInfo customerInfo;
-  @OneToMany(cascade = CascadeType.PERSIST)
-  private List<OrderItem> orderItems;
+  @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.PERSIST)
+  private List<OrderItem> orderItems = new ArrayList<>();
   @Column(precision = 19, scale = 4)
   private BigDecimal costShipping;
   @Embedded
@@ -39,11 +41,11 @@ public class Order {
   /**
    * Parametrized constructor with all values.
    *
-   * @param customerInfo  Customerinfo object which corresponds to the order
-   * @param orderItems    A List with the order items
-   * @param costShipping  BigDecimal of the shipping costs, always in euro
-   * @param costTotal     The total cost of the order
-   * @param orderDate     Date when the order was created
+   * @param customerInfo Customerinfo object which corresponds to the order
+   * @param orderItems A List with the order items
+   * @param costShipping BigDecimal of the shipping costs, always in euro
+   * @param costTotal The total cost of the order
+   * @param orderDate Date when the order was created
    * @param paymentMethod The payment method chosen by the customer
    */
   public Order(CustomerInfo customerInfo, List<OrderItem> orderItems, BigDecimal costShipping,
@@ -72,11 +74,11 @@ public class Order {
     this.customerInfo = customerInfo;
   }
 
-  public List<OrderItem> getShoppingCart() {
+  public List<OrderItem> getOrderItems() {
     return orderItems;
   }
 
-  public void setShoppingCart(List<OrderItem> orderItems) {
+  public void setOrderItems(List<OrderItem> orderItems) {
     this.orderItems = orderItems;
   }
 
