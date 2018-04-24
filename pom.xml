@@ -117,8 +117,16 @@
         <version>0.8.1</version>
         <executions>
           <execution>
+            <id>pre-unit-test</id>
             <goals>
               <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>post-unit-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
             </goals>
           </execution>
         </executions>
