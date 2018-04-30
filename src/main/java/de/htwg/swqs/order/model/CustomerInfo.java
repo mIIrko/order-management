@@ -125,15 +125,18 @@ public class CustomerInfo implements Comparable<CustomerInfo> {
     return this.street + " " + this.city + " " + this.postcode;
   }
 
-  /**
-   * Compares two customer infos.
-   */
+  @Override
   public int compareTo(CustomerInfo customerInfo) {
-    int compare = this.surname.compareToIgnoreCase(customerInfo.surname);
-    if (compare == 0) {
-      compare = this.firstname.compareToIgnoreCase(customerInfo.firstname);
+    if (
+        customerInfo.email.compareTo(this.email) == 0
+            && customerInfo.firstname.compareTo(this.firstname) == 0
+            && customerInfo.surname.compareTo(this.surname) == 0
+            && customerInfo.street.compareTo(this.street) == 0
+            && customerInfo.city.compareTo(this.city) == 0) {
+      return 0;
+    } else {
+      return -1;
     }
-    return compare;
   }
 
   @Override
