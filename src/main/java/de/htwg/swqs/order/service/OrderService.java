@@ -3,6 +3,7 @@ package de.htwg.swqs.order.service;
 import de.htwg.swqs.order.model.CustomerInfo;
 import de.htwg.swqs.order.model.Order;
 import de.htwg.swqs.order.model.OrderItem;
+import de.htwg.swqs.order.payment.PaymentMethod;
 import de.htwg.swqs.order.util.OrderNotFoundException;
 import java.util.Currency;
 import java.util.List;

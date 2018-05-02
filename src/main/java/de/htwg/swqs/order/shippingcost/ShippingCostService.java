@@ -7,6 +7,9 @@ import java.util.List;
 
 public interface ShippingCostService {
 
-  BigDecimal calculateShippingCosts(CustomerInfo customerInfo, List<OrderItem> orderItems);
+  BigDecimal calculateShippingCosts(
+      CustomerInfo customerInfo,
+      List<OrderItem> orderItems,
+      BigDecimal costTotal);
 
 }

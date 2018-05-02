@@ -6,5 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CustomerInfoRepository extends JpaRepository<CustomerInfo, Long> {
 
-  Optional<CustomerInfo> findByEmail(String email);
 }

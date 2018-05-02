@@ -9,6 +9,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,6 +35,7 @@ public class Order {
   @Embedded
   private Cost costTotal;
   private LocalDate orderDate;
+  @Enumerated(EnumType.STRING)
   private PaymentMethod paymentMethod;
 
   public Order() {

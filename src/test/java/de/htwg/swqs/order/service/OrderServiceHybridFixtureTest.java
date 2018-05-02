@@ -81,9 +81,10 @@ public class OrderServiceHybridFixtureTest {
     List<OrderItem> itemList = createDummyOrderItemList();
     Currency currency = Currency.getInstance("EUR");
 
-    when(shippingCostService.calculateShippingCosts(customerInfo, itemList)).thenReturn(
-        new BigDecimal("4.20")
-    );
+    when(shippingCostService.calculateShippingCosts(customerInfo, itemList, any(BigDecimal.class)))
+        .thenReturn(
+            new BigDecimal("4.20")
+        );
 
     Order dummyOrder = mock(Order.class);
     when(dummyOrder.getId()).thenReturn(1L);

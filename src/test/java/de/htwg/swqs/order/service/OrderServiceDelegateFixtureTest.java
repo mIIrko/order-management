@@ -65,9 +65,11 @@ public class OrderServiceDelegateFixtureTest {
     List<OrderItem> itemList = createDummyOrderItemList();
     Currency currency = Currency.getInstance("EUR");
     ShippingCostService shippingCostServiceMock = mock(ShippingCostService.class);
-    when(shippingCostServiceMock.calculateShippingCosts(customerInfo, itemList)).thenReturn(
-        new BigDecimal("4.20")
-    );
+    when(shippingCostServiceMock
+        .calculateShippingCosts(customerInfo, itemList, any(BigDecimal.class)))
+        .thenReturn(
+            new BigDecimal("4.20")
+        );
     OrderRepository orderRepositoryMock = mock(OrderRepository.class);
     Order dummyOrder = mock(Order.class);
     when(dummyOrder.getId()).thenReturn(1L);

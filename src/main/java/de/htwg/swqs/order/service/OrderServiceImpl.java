@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-  private static final BigDecimal FREE_SHIPPING_START = new BigDecimal("200.00");
   private static final Currency DEFAULT_CURRENCY = Currency.getInstance("EUR");
 
   private ShippingCostService shippingCostService;
@@ -66,16 +65,11 @@ public class OrderServiceImpl implements OrderService {
           .add(item.getPriceEuro().multiply(new BigDecimal(item.getQuantity())));
     }
 
-    // calculate shipping costs
-    BigDecimal shippingCosts = new BigDecimal("0.00");
-    if (totalCostOfItems.compareTo(FREE_SHIPPING_START) >= 0) {
-      // the customer must not pay shipping costs
-      newOrder.setCostShipping(new BigDecimal("0.00"));
-    } else {
-      // shipping costs delivered always as euro
-      shippingCosts = this.shippingCostService.calculateShippingCosts(customerInfo, orderItems);
-      newOrder.setCostShipping(shippingCosts);
-    }
+
+    // shipping costs delivered always as euro
+    BigDecimal shippingCosts = this.shippingCostService.calculateShippingCosts(customerInfo, orderItems, totalCostOfItems);
+    newOrder.setCostShipping(shippingCosts);
+
     BigDecimal totalCosts = totalCostOfItems.add(shippingCosts);
 
     // check if the customer wants another currency than euro

@@ -78,7 +78,8 @@ public class OrderServiceImplicitFixtureTest {
   public void createNewOrderObjectAndCheckRepoIsCalled() {
 
     // setup
-    when(this.shippingCostService.calculateShippingCosts(this.customerInfo, this.itemList))
+    when(this.shippingCostService
+        .calculateShippingCosts(this.customerInfo, this.itemList, any(BigDecimal.class)))
         .thenReturn(
             new BigDecimal("4.20")
         );
