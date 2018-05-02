@@ -79,7 +79,7 @@ public class OrderServiceImplicitFixtureTest {
 
     // setup
     when(this.shippingCostService
-        .calculateShippingCosts(this.customerInfo, this.itemList, any(BigDecimal.class)))
+        .calculateShippingCosts(eq(this.customerInfo), eq(this.itemList), any(BigDecimal.class)))
         .thenReturn(
             new BigDecimal("4.20")
         );

@@ -1,6 +1,7 @@
 package de.htwg.swqs.order.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -66,7 +67,7 @@ public class OrderServiceDelegateFixtureTest {
     Currency currency = Currency.getInstance("EUR");
     ShippingCostService shippingCostServiceMock = mock(ShippingCostService.class);
     when(shippingCostServiceMock
-        .calculateShippingCosts(customerInfo, itemList, any(BigDecimal.class)))
+        .calculateShippingCosts(eq(customerInfo), eq(itemList), any(BigDecimal.class)))
         .thenReturn(
             new BigDecimal("4.20")
         );
