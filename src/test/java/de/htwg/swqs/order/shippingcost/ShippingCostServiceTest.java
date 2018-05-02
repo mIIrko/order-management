@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -32,7 +33,7 @@ public class ShippingCostServiceTest {
 
     // execute
     BigDecimal costs = this.shippingCostService
-        .calculateShippingCosts(customerInfo, list, any(BigDecimal.class));
+        .calculateShippingCosts(customerInfo, list, new BigDecimal("42.75"));
 
     // verify the calculated shipping cost is greater than zero
     assertEquals(1, (costs.compareTo(new BigDecimal("0.00"))));
@@ -48,7 +49,7 @@ public class ShippingCostServiceTest {
 
     // execute
     BigDecimal costs = this.shippingCostService
-        .calculateShippingCosts(customerInfo, list, any(BigDecimal.class));
+        .calculateShippingCosts(customerInfo, list, new BigDecimal("42.75"));
 
     // verify
     // fail("Verification is missing");
