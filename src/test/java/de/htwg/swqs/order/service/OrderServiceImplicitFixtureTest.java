@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -84,8 +85,6 @@ public class OrderServiceImplicitFixtureTest {
             new BigDecimal("4.20")
         );
     Order dummyOrder = mock(Order.class);
-    when(dummyOrder.getId()).thenReturn(1L);
-    when(this.orderRepository.saveAndFlush(any(Order.class))).thenReturn(dummyOrder);
 
     // execute
     Order createdOrder = orderService.createOrder(this.customerInfo, this.itemList, this.currency);
@@ -138,6 +137,7 @@ public class OrderServiceImplicitFixtureTest {
     // execute
     Order returnedOrder = this.orderService.getOrderById(testId);
 
-    // verify
+    // The test is verified by the expected exception
+
   }
 }

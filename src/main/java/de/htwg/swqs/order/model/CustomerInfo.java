@@ -1,11 +1,9 @@
 package de.htwg.swqs.order.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+
 
 @Entity
 public class CustomerInfo implements Comparable<CustomerInfo> {
@@ -13,19 +11,12 @@ public class CustomerInfo implements Comparable<CustomerInfo> {
   @Id
   @GeneratedValue
   private long id;
-  @Email
   private String email;
-  @NotBlank
   private String surname;
-  @NotBlank
   private String firstname;
-  @NotBlank
   private String street;
-  @NotBlank
   private String city;
-  @NotBlank
   private String postcode;
-  @NotBlank
   private String isoCountryCode;
 
 

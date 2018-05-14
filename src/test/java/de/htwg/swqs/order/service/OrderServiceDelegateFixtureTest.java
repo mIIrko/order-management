@@ -1,6 +1,7 @@
 package de.htwg.swqs.order.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
@@ -138,6 +139,6 @@ public class OrderServiceDelegateFixtureTest {
         currencyConverterServiceMock, emailServiceMock);        // execute
     Order returnedOrder = orderService.getOrderById(testId);
 
-    // verify
+    // The test is verified by the expected exception
   }
 }
